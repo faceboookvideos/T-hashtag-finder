@@ -1,21 +1,23 @@
 from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 import time
 
-# ড্রাইভার সেটআপ
-driver = webdriver.Chrome()  # ক্রোম ড্রাইভার ব্যবহার করছি
+# ড্রাইভার সেট আপ
+driver = webdriver.Chrome(ChromeDriverManager().install())
 
-# Tumblr খুলুন
+# Tumblr পেজ ওপেন করো (নির্দিষ্ট URL বসাও)
 driver.get('https://www.tumblr.com')
 
-# একটু ওয়েট করে নিন (যদি লগ ইন না করেই পোস্টগুলো দেখতে চান)
+# পেজ লোড হতে একটু সময় দাও
 time.sleep(5)
 
-# পোস্টগুলোর হ্যাশট্যাগ সংগ্রহ করুন
-posts = driver.find_elements(By.CSS_SELECTOR, 'a')  # লিঙ্কগুলো ধরছি, তবে তুমি স্পেসিফিক হ্যাশট্যাগ এলিমেন্ট সিলেক্ট করতে পারো
-for post in posts[:10]:  # প্রথম ১০টা পোস্ট ধরে নিই
+# হ্যাশট্যাগ সংগ্রহের জন্য সব পোস্টের লিঙ্ক খুঁজে বের করো
+posts = driver.find_elements(By.CSS_SELECTOR, 'a')  # উদাহরণ হিসেবে সব লিঙ্ক ধরছি
+
+for post in posts:
     if '#' in post.text:
         print(post.text)
 
-# শেষে ব্রাউজার বন্ধ করুন
+# সবশেষে ড্রাইভার বন্ধ করো
 driver.quit()
